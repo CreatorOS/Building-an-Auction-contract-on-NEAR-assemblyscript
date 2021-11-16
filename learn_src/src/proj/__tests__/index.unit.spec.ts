@@ -1,6 +1,6 @@
 import * as contract from "../assembly";
-import {context, u128, VMContext} from "near-sdk-as";
-import {ONE_NEAR, TO_BE_SENT_FUNDS} from "../../utils";
+import {VMContext} from "near-sdk-as";
+import {TO_BE_SENT_FUNDS} from "../../utils";
 
 describe("Auction contract", () => {
   beforeEach(() => {
