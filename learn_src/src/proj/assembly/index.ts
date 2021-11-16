@@ -1,5 +1,5 @@
 //A simple auction contract
-import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG } from "near-sdk-as";
+import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG, env} from "near-sdk-as";
 /** 
  * Exporting a new class SimpleAuction so it can be used outside of this file.
  */
@@ -8,7 +8,7 @@ export class SimpleAuction {
     id: u32;
     beneficiary: string;
     //In milliseconds
-    auctionEndTime: i64;
+    auctionEndTime: u64;
     highestBidder: string;
     highestBid: u128;
     bidsDistributed: boolean;
@@ -21,7 +21,7 @@ export class SimpleAuction {
         */
         const rng = new RNG<u32>(1, u32.MAX_VALUE);
         const roll = rng.next();
-        const currentDate = Date.now();
+        const currentDate = env.block_timestamp();
         this.id = roll;
         this.beneficiary = beneficiaryAccount;
         this.auctionEndTime = biddingTime + currentDate;
@@ -50,7 +50,7 @@ export function createAuction(biddingTime: u32): u32 {
 export function bid(auctionId: u32): boolean {
     const auction = auctions.getSome(auctionId);
 
-    const currentDate = Date.now();
+    const currentDate = env.block_timestamp();
     if (currentDate > auction.auctionEndTime) {
         return false;
     }
@@ -77,7 +77,7 @@ export function bid(auctionId: u32): boolean {
 export function auctionEnd(auctionId: u32): boolean {
     const auction = auctions.getSome(auctionId);
 
-    const currentDate = Date.now();
+    const currentDate = env.block_timestamp();
     if (currentDate > auction.auctionEndTime) {
         return false;
     }
