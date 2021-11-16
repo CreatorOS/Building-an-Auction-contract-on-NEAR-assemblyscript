@@ -1,5 +1,5 @@
 //A simple auction contract
-import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG} from "near-sdk-as";
+import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG } from "near-sdk-as";
 /** 
  * Exporting a new class SimpleAuction so it can be used outside of this file.
  */
@@ -40,9 +40,9 @@ export const pendingReturns = new PersistentMap<string, u128>("p");
 export const bids = new PersistentVector<string>("b");
 
 //Create an auction 
-export function createAuction(biddingTime: u32) : u32 {
+export function createAuction(biddingTime: u32): u32 {
     const auction = new SimpleAuction(context.sender, biddingTime);
-    auctions.set(auction.id,auction);
+    auctions.set(auction.id, auction);
     return auction.id;
 }
 
@@ -51,15 +51,15 @@ export function bid(auctionId: u32): boolean {
     const auction = auctions.getSome(auctionId);
 
     const currentDate = Date.now();
-    if(currentDate > auction.auctionEndTime){
+    if (currentDate > auction.auctionEndTime) {
         return false;
     }
 
-    if(context.attachedDeposit < auction.highestBid) {
+    if (context.attachedDeposit < auction.highestBid) {
         return false;
     }
 
-    if (auction.ended){
+    if (auction.ended) {
         return false;
     }
 
@@ -69,7 +69,7 @@ export function bid(auctionId: u32): boolean {
 
     bids.push(context.sender);
     auctions.set(auction.id, auction);
-   
+
     return true;
 }
 
@@ -78,11 +78,11 @@ export function auctionEnd(auctionId: u32): boolean {
     const auction = auctions.getSome(auctionId);
 
     const currentDate = Date.now();
-    if(currentDate > auction.auctionEndTime){
+    if (currentDate > auction.auctionEndTime) {
         return false;
     }
 
-    if (auction.ended){
+    if (auction.ended) {
         return false;
     }
 
@@ -92,7 +92,7 @@ export function auctionEnd(auctionId: u32): boolean {
     const highestBidderAddress = bids.pop();
     //const highestBidderAddress = bids[bids.length-1];
     const highestBidderAmount = pendingReturns.getSome(highestBidderAddress);
-    
+
     const to_beneficiary = ContractPromiseBatch.create(auction.beneficiary);
     to_beneficiary.transfer(highestBidderAmount);
 
@@ -103,14 +103,13 @@ export function auctionEnd(auctionId: u32): boolean {
 //Distribute funds after auction ends
 export function distributeFunds(auctionId: u32): boolean {
     const auction = auctions.getSome(auctionId);
-    while(bids.length !=0) {
-
+    while (bids.length != 0) {
         let bidder = bids.pop();
         let bidAmount = pendingReturns.getSome(bidder);
         const to_beneficiary = ContractPromiseBatch.create(bidder);
         to_beneficiary.transfer(bidAmount);
     }
-    if(bids.length == 0){
+    if (bids.length == 0) {
         auction.bidsDistributed = true;
         auctions.set(auctionId, auction);
         return true;
@@ -118,20 +117,20 @@ export function distributeFunds(auctionId: u32): boolean {
     else {
         return false;
     }
-    
+
 }
 
 //Getter for all the bids
 
 //Returns all the active bids
 export function getBids(): Map<string, u128> {
-  let tempBidsMap = new Map<string, u128>();
+    let tempBidsMap = new Map<string, u128>();
 
-  if(bids.length != 0){
-    for(let i =0; i< bids.length; i++){
-        let bidAmount = pendingReturns.getSome(bids[i]);
-        tempBidsMap.set(bids[i], bidAmount)
+    if (bids.length != 0) {
+        for (let i = 0; i < bids.length; i++) {
+            let bidAmount = pendingReturns.getSome(bids[i]);
+            tempBidsMap.set(bids[i], bidAmount)
+        }
     }
-  }
-  return tempBidsMap;
+    return tempBidsMap;
 }
