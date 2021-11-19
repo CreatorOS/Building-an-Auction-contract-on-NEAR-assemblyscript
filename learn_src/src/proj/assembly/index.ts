@@ -1,5 +1,5 @@
 //A simple auction contract
-import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG, env} from "near-sdk-as";
+import { context, u128, PersistentMap, PersistentVector, logging, ContractPromiseBatch, RNG, env } from "near-sdk-as";
 /** 
  * Exporting a new class SimpleAuction so it can be used outside of this file.
  */

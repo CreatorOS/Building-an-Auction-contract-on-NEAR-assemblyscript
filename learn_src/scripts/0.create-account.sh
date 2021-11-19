@@ -1,11 +1,36 @@
-#!/usr/bin/env bash
+# [ -z "$CONTRACT" ] && echo "Missing \$CONTRACT environment variable"
+# [ -z "$OWNER" ] && echo "Missing \$OWNER environment variable"
 
-set -e
+# echo "deleting $CONTRACT and setting $OWNER as beneficiary"
+# echo
+# near delete $CONTRACT $OWNER
 
-[ -z "$CONTRACT" ] && echo "Missing \$CONTRACT environment variable" && exit 1
-[ -z "$CONTRACT" ] || echo "Found it! \$CONTRACT is set to [ $CONTRACT ]"
+echo --------------------------------------------
+echo
+echo "cleaning up the /neardev folder"
+echo
+rm -rf ./neardev
+
+# exit on first error after this point to avoid redeploying with successful build
+# set -e
+
+echo --------------------------------------------
+echo
+echo "rebuilding the contract (release build)"
+echo
+yarn build:release
+
+echo --------------------------------------------
+echo
+echo "redeploying the contract"
+echo
+contract_file=proj.wasm
+echo "creating first dev-account"
+until echo "n" | near dev-deploy ./build/release/$contract_file; do :; done
+
+user1=$(cat ./neardev/dev-account)
+touch user1.txt
+echo $user1 > user1.txt
+echo "user1: $user1"
 
 
-near create-account $CONTRACT.hdsaleh.testnet --masterAccount hdsaleh.testnet --initialBalance 10
-
-exit 0
