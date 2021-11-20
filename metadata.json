@@ -1,34 +1,30 @@
 {
-    "version": "1.0.0",
-    "defaultFile": "src/proj/assembly/index.ts",
-    "environment": "AssemblyScript",
-    "setupCommands": [
-        "yarn"
-    ],
-    "compileCommand": "sh scripts/1.deploy.sh",
-    "tests": [
-        {
-            "itShould": "create an auction",
-            "command": "sh learn_tests/01.sh"
-        },
-        {
-            "itShould": "allow users to bid",
-            "command": "sh learn_tests/02.sh"
-        },
-        {
-            "itShould": "end an auction",
-            "command": "sh learn_tests/03.sh"
-        },
-        {
-            "itShould": "distribute funds",
-            "command": "sh learn_tests/04.sh"
-        },
-        {
-            "itShould": "store and return funds",
-            "command": "sh learn_tests/05.sh"
-        }
-    ],
-    "learnerAccessibleFileList": [
-        "src/proj/assembly/*"
-    ]
+  "version": "1.0.0",
+  "defaultFile": "src/proj/assembly/index.ts",
+  "environment": "near-asm",
+  "setupCommands": [],
+  "compileCommand": ". scripts/1.init.sh proj.wasm",
+  "tests": [
+    {
+      "itShould": "create an auction",
+      "command": "sh learn_tests/01.sh"
+    },
+    {
+      "itShould": "allow users to bid",
+      "command": "sh learn_tests/02.sh"
+    },
+    {
+      "itShould": "end an auction",
+      "command": "sh learn_tests/03.sh"
+    },
+    {
+      "itShould": "distribute funds",
+      "command": "sh learn_tests/04.sh"
+    },
+    {
+      "itShould": "store and return funds",
+      "command": "sh learn_tests/05.sh"
+    }
+  ],
+  "learnerAccessibleFileList": ["src/proj/assembly/*"]
 }

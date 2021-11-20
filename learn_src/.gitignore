@@ -3,10 +3,11 @@ build/
 out/
 
 .DS_Store
-user1.txt
 *.log
 **/target/
 
 .vscode
 
 neardev/
+
+user1.txt
