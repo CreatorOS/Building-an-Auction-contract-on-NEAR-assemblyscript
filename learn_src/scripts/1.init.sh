@@ -10,7 +10,7 @@ echo
 echo "rebuilding the contract (release build)"
 echo
 echo --------------------------------------------
-yarn build:release
+yarn build:release || exit 1
 
 file1="user1.txt"
 if [ ! -f "$file1" ]
