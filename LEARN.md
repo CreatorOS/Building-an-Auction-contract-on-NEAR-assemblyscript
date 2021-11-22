@@ -27,11 +27,17 @@ Picking up from where we left, let's write the parameters list and populate Simp
 - beneficiaryAccount: the Near account id of the auction creator.
 - biddingTime: the "expiration period" of the auction.
 You have to initialize state fields like the following:
+
 STEP 1 : initialize id with the random value generated (roll).
+
 STEP 2 : initialize the state field "beneficiary" with the benificiaryAccount parameter.
+
 STEP 3 : initialize auctionEndTime with the sum of biddingTime and current date.
+
 STEP 4 : initialize the state field "ended" with false.
+
 STEP 5 : initialize the highestBid field with zero. You can do it using u128.Zero (from the imports at the beginning).
+
 STEP 6 : initiliaze bidsDistributed with false. 
 ```ts
 constructor(beneficiaryAccount: string, biddingTime: u32) {
@@ -64,7 +70,9 @@ export const bids = new PersistentVector<string>("b");
 those will help us store and retireve all the data we need.
 Now straight to the createAuction function, You have to write two things here:
 Look at he parameter list for the SimpleAuction constructor, as mentioned previously, there are two of them. the first one (beneficiaryAccount) should be set to context.sender (the caller's NEAR account id). the second one (biddingTime) is provided as a createAuction() parameter.
+
 STEP 1 : pass the appropriate values as parameters.
+
 STEP 2 : return the id, the same one used in createAuction in the second line.  
 ```ts
 export function createAuction(biddingTime: u32) : u32 {
@@ -76,10 +84,15 @@ export function createAuction(biddingTime: u32) : u32 {
 Great, ready to go further?
 ## Moving on - bidding:
 Now to the real deal, we will write our bidding function. This function receives a 32-bit unsigned integer and returns a boolean. You have a couple of things to do here, but all that you are going to write in this subquest is either context.sender or context.attachedDeposit. Remeber those? the caller's id and funds sent, respectively. 
+
 STEP 1 : check if the funds are sufficient to bid.
+
 STEP 2 : this set() function takes two parameters, check pendingReturns key:value pair and write these parameters.
+
 STEP 3 : set this auction's highest bid.
+
 STEP 4 : and highest bidder.
+
 STEP 5 : store the caller's id in bids.  
 ```ts
 export function bid(auctionId: u32): boolean {
@@ -105,8 +118,11 @@ export function bid(auctionId: u32): boolean {
 Now that we wrote the main functionality of this contract, let's build on it!
 ## After the auction - Ending the auction properly
 Now we will write a function that ends the auction. it marks the auction ended, sends the highest bid to the beneficiary, and refunds the other particpants. this refunding happens in distributeFunds() function, we will write it in the next subquest.
+
 STEP 1 : mark the auction as ended.
+
 STEP 2 : prepare to send funds to the auction's beneficiary, pass the latter as a prameter, the only parameter to ContractPromiseBatch.create().
+
 STEP 3 : transfer the highest bidder amount to the beneficiary. 
 ```ts
 export function auctionEnd(auctionId: u32): boolean {
@@ -131,8 +147,11 @@ export function auctionEnd(auctionId: u32): boolean {
 Take a breath, we are marching forward!
 ## After the auction - distributing funds
 The function we are going to write is not really complicated, it takes an auction id, fetches the auction, ditributes funds to participants, and marks auction.bidsDistributed as true.
+
 STEP 1 : prepare for sending funds to the bidder
+
 STEP 2 : pass the amount tp be sent as a parameter to transfer()
+
 STEP 3 : now that bids are distributed, make sure to mark the correspondent field as true.
 ```ts
 export function distributeFunds(auctionId: u32): boolean {
@@ -156,7 +175,9 @@ export function distributeFunds(auctionId: u32): boolean {
 Almost there!
 ## writing a helper function - getBids
 We may need to get a list of bidders, lets write a getter:
+
 STEP 1 : pass the appropriate parameters for set(), give it a moment of thinking, you need a {key:value} pair of {String:u128}.
+
 STEP 2 : return the temporary collection
 ```ts
 export function getBids(): Map<string, u128> {
