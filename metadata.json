@@ -7,23 +7,23 @@
   "tests": [
     {
       "itShould": "create an auction",
-      "command": ". learn_tests/01.sh"
+      "command": "sh learn_tests/01.sh"
     },
     {
       "itShould": "allow users to bid",
-      "command": ". learn_tests/02.sh"
+      "command": "sh learn_tests/02.sh"
     },
     {
       "itShould": "end an auction",
-      "command": ". learn_tests/03.sh"
+      "command": "sh learn_tests/03.sh"
     },
     {
       "itShould": "distribute funds",
-      "command": ". learn_tests/04.sh"
+      "command": "sh learn_tests/04.sh"
     },
     {
       "itShould": "store and return funds",
-      "command": ". learn_tests/05.sh"
+      "command": "sh learn_tests/05.sh"
     }
   ],
   "learnerAccessibleFileList": ["src/proj/assembly/*"]
