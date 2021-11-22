@@ -1,5 +1,5 @@
 # Building an auction contract on NEAR
-In this quest, we will learn how to build an auction smart contract on NEAR using AssemblyScript. This contract will allow users to create auctions, place bids, end auctions, and distribute funds. This contract is easy to understand, no overcomplications. Let's get right to it!
+In this quest, we will learn how to build an auction smart contract on NEAR using AssemblyScript. This contract will allow users to create auctions, place bids, end auctions, and distribute funds. This contract is easy to understand, with no overcomplications. Let's get right to it!
 ## Writing the SimpleAuction class fields
 First, we need to create a class that will be the base stone for the contract's state. You see a couple of imports from NEAR's AssemblyScript SDK:
 ```ts
@@ -58,7 +58,7 @@ constructor(beneficiaryAccount: string, biddingTime: u32) {
 Cool! SimpleAuction is ready now, let's continue on.
 
 ## Starting with functionality - creating an auction
-In this subquest, we will write a function that creates an auction. but before this, let's create some helpful data structures:
+In this subquest, we will write a function that creates an auction. But before this, let's create some helpful data structures:
 ```ts
 //Create a persistentMap to store auctions and auctionIDs
 export const auctions = new PersistentMap<u32, SimpleAuction>("a");
@@ -67,9 +67,9 @@ export const pendingReturns = new PersistentMap<string, u128>("p");
 //Create a persistentVector to store all the bid accounts(in sorted order)
 export const bids = new PersistentVector<string>("b");
 ```
-those will help us store and retireve all the data we need.
+those will help us store and retrieve all the data we need.
 Now straight to the createAuction function, You have to write two things here:
-Look at he parameter list for the SimpleAuction constructor, as mentioned previously, there are two of them. the first one (beneficiaryAccount) should be set to context.sender (the caller's NEAR account id). the second one (biddingTime) is provided as a createAuction() parameter.
+Look at the parameter list for the SimpleAuction constructor, as mentioned previously, there are two of them. the first one (beneficiaryAccount) should be set to context.sender (the caller's NEAR account id). the second one (biddingTime) is provided as a createAuction() parameter.
 
 STEP 1 : pass the appropriate values as parameters.
 
@@ -83,11 +83,11 @@ export function createAuction(biddingTime: u32) : u32 {
 ```
 Great, ready to go further?
 ## Moving on - bidding:
-Now to the real deal, we will write our bidding function. This function receives a 32-bit unsigned integer and returns a boolean. You have a couple of things to do here, but all that you are going to write in this subquest is either context.sender or context.attachedDeposit. Remeber those? the caller's id and funds sent, respectively. 
+Now to the real deal, we will write our bidding function. This function receives a 32-bit unsigned integer and returns a boolean. You have a couple of things to do here, but all that you are going to write in this subquest is either context.sender, or context.attachedDeposit. Remember those? the caller's id and funds sent, respectively. 
 
 STEP 1 : check if the funds are sufficient to bid.
 
-STEP 2 : this set() function takes two parameters, check pendingReturns key:value pair and write these parameters.
+STEP 2 : this set() function takes two parameters, check pendingReturns key:value pair, and write these parameters.
 
 STEP 3 : set this auction's highest bid.
 
@@ -117,11 +117,11 @@ export function bid(auctionId: u32): boolean {
 ```
 Now that we wrote the main functionality of this contract, let's build on it!
 ## After the auction - Ending the auction properly
-Now we will write a function that ends the auction. it marks the auction ended, sends the highest bid to the beneficiary, and refunds the other particpants. this refunding happens in distributeFunds() function, we will write it in the next subquest.
+Now we will write a function that ends the auction. it marks the auction ended, sends the highest bid to the beneficiary, and refunds the other participants. this refunding happens in distributeFunds() function, we will write it in the next subquest.
 
 STEP 1 : mark the auction as ended.
 
-STEP 2 : prepare to send funds to the auction's beneficiary, pass the latter as a prameter, the only parameter to ContractPromiseBatch.create().
+STEP 2 : prepare to send funds to the auction's beneficiary, pass the latter as a parameter, the only parameter to ContractPromiseBatch.create().
 
 STEP 3 : transfer the highest bidder amount to the beneficiary. 
 ```ts
@@ -146,7 +146,7 @@ export function auctionEnd(auctionId: u32): boolean {
 ```
 Take a breath, we are marching forward!
 ## After the auction - distributing funds
-The function we are going to write is not really complicated, it takes an auction id, fetches the auction, ditributes funds to participants, and marks auction.bidsDistributed as true.
+The function we are going to write is not really complicated, it takes an auction id, fetches the auction, distributes funds to participants, and marks auction.bidsDistributed as true.
 
 STEP 1 : prepare for sending funds to the bidder
 
