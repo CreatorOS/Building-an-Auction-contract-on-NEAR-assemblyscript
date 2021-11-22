@@ -174,7 +174,7 @@ export function distributeFunds(auctionId: u32): boolean {
 ```
 Almost there!
 ## writing a helper function - getBids
-We may need to get a list of bidders, lets write a getter:
+We may need to get a list of bidders, lets write a getter method for that:
 
 STEP 1 : pass the appropriate parameters for set(), give it a moment of thinking, you need a {key:value} pair of {String:u128}.
 
