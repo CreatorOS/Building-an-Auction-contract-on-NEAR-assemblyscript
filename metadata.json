@@ -3,7 +3,7 @@
   "defaultFile": "src/proj/assembly/index.ts",
   "environment": "near-asm",
   "setupCommands": [],
-  "compileCommand": ". scripts/1.init.sh proj.wasm",
+  "compileCommand": "yarn build",
   "tests": [
     {
       "itShould": "create an auction",
